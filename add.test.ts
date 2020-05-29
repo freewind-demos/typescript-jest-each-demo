@@ -1,7 +1,27 @@
 import add from './add';
 
 describe('test', () => {
-  it('1+2 === 3', () => {
-    expect(add(1, 2)).toBe(3);
-  })
+  it.each([
+    [1, 2, 3],
+    [2, 3, 5]
+  ])(".add(%i, %i)", (a, b, expected) => {
+    expect(add(a, b)).toBe(expected);
+  });
+
+  [
+    {a: 1, b: 2, expected: 3},
+    {a: 2, b: 3, expected: 5},
+  ].forEach(({a, b, expected}) => {
+    it(`add(${a}, ${b}) should == ${expected}`, () => {
+      expect(add(a, b)).toBe(expected);
+    })
+  });
+
+  it.each`
+  a    | b    | expected
+  ${1} | ${2} | ${3}
+  ${2} | ${3} | ${5}
+  `('returns $expected when $a is added $b', ({a, b, expected}) => {
+    expect(add(a, b)).toBe(expected);
+  });
 })
